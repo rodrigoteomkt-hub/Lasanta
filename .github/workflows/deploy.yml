@@ -1,0 +1,41 @@
+name: Publicar no IONOS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: publicar-ionos
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      # mirror --reverse sem --delete: envia e sobrescreve, nunca apaga nada no servidor.
+      # Inclui arquivos ocultos como o .htaccess.
+      - name: Enviar site/ por SFTP
+        env:
+          LFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_PORT: ${{ secrets.SFTP_PORT }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PATH: ${{ secrets.SFTP_PATH }}
+        run: |
+          lftp --env-password -p "$SFTP_PORT" -u "$SFTP_USER" "sftp://$SFTP_HOST" -e "
+            set sftp:auto-confirm yes;
+            set net:max-retries 2;
+            set net:timeout 30;
+            set cmd:fail-exit yes;
+            mirror --reverse --verbose --parallel=4 --no-perms ./site \"$SFTP_PATH\";
+            bye
+          "

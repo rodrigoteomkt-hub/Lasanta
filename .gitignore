@@ -1,0 +1,9 @@
+# Só a pasta site/ e a automação vão para o GitHub.
+# _originais/, extracted/, images/ e logo/ ficam apenas neste computador.
+/*
+!/.gitignore
+!/.github/
+!/site/
+
+desktop.ini
+Thumbs.db

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menú de Navidad · La Santa</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<style>
+  @font-face{font-family:'Cormorant Garamond';src:url(cormorant.woff2) format('woff2');font-weight:300 600;font-display:swap}
+  @font-face{font-family:'Hanken Grotesk';src:url(hanken.woff2) format('woff2');font-weight:400 600;font-display:swap}
+  :root{--paper:#FBFAF7;--ink:#1C1A15;--copper:#8C5C2B;--muted:#5C5647;--cream:#F7F3EA;--hair:rgba(28,26,21,.13)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:clamp(1.5rem,5vw,3.5rem) clamp(1.1rem,5vw,3.5rem)}
+  .wrap{max-width:720px;margin:0 auto}
+  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:clamp(1.6rem,3.5vw,2.4rem)}
+  .eyebrow{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--copper)}
+  h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(2.1rem,7vw,3.2rem);line-height:1.04;margin-top:.35rem}
+  .back{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--hair);padding-bottom:.3em;white-space:nowrap}
+  .back:hover{color:var(--copper);border-color:var(--copper)}
+  .sub{color:var(--muted);font-size:1rem;line-height:1.5;max-width:58ch}
+  .menus{display:flex;flex-direction:column;align-items:center;gap:clamp(1.4rem,4vw,2.4rem);margin-top:clamp(1.8rem,4vw,2.6rem)}
+  .menus img{display:block;width:100%;height:auto;border:1px solid var(--hair);border-radius:4px;background:#fff;box-shadow:0 10px 30px -16px rgba(28,26,21,.25)}
+  .foot{margin-top:clamp(2rem,5vw,3rem);text-align:center;color:var(--muted);font-size:.9rem;letter-spacing:.02em}
+  .foot a{color:var(--ink);font-weight:500}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <p class="eyebrow">Restaurante La Santa</p>
+        <h1>Menú de Navidad</h1>
+      </div>
+      <a class="back" href="index.html">← Volver</a>
+    </div>
+    <p class="sub">Tres menús para grupos. Todos incluyen vino D.O. Ribera o Rueda, agua, café o infusión y copa de cava con turrones.</p>
+    <div class="menus">
+      <img src="menu-navidad-45.jpg" width="1457" height="2000" loading="lazy" decoding="async" alt="Menú de Navidad para grupos — 45 € por persona">
+      <img src="menu-navidad-55.jpg" width="1457" height="2000" loading="lazy" decoding="async" alt="Menú de Navidad para grupos — 55 € por persona">
+      <img src="menu-navidad-65.jpg" width="1454" height="2000" loading="lazy" decoding="async" alt="Menú de Navidad para grupos — 65 € por persona">
+    </div>
+    <p class="foot">Reservas · <a href="tel:+34920212156">920 21 21 56</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "Restaurante La Santa",
+  "short_name": "La Santa",
+  "description": "Restaurante castellano en Ávila, junto a la muralla.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FCFBF8",
+  "theme_color": "#181510",
+  "icons": [
+    { "src": "favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
