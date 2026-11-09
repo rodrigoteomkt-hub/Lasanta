@@ -29,13 +29,22 @@ jobs:
           SFTP_HOST: ${{ secrets.SFTP_HOST }}
           SFTP_PORT: ${{ secrets.SFTP_PORT }}
           SFTP_USER: ${{ secrets.SFTP_USER }}
-          SFTP_PATH: ${{ secrets.SFTP_PATH }}
+          # Pasta de destino do domínio em IONOS > Dominios y SSL. Se mudar lá, mudar aqui.
+          PASTA_SITE: /lsnovo-menunavidad
         run: |
           lftp --env-password -p "$SFTP_PORT" -u "$SFTP_USER" "sftp://$SFTP_HOST" -e "
             set sftp:auto-confirm yes;
             set net:max-retries 2;
             set net:timeout 30;
             set cmd:fail-exit yes;
-            mirror --reverse --verbose --parallel=4 --no-perms ./site \"$SFTP_PATH\";
+            mirror --reverse --verbose --parallel=4 --no-perms ./site \"$PASTA_SITE\";
+            cls -l \"$PASTA_SITE/index.html\";
             bye
           "
+
+      # Verde só se o site no ar for idêntico ao que foi enviado.
+      - name: Conferir o site publicado
+        run: |
+          sleep 3
+          curl -fsS -H 'Cache-Control: no-cache' "https://restaurantelasanta.com/index.html?deploy=$GITHUB_RUN_ID" -o publicado.html
+          cmp publicado.html site/index.html || { echo "::error::O site no ar nao corresponde ao que foi enviado."; exit 1; }
