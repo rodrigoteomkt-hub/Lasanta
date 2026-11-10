@@ -177,6 +177,59 @@
   var rt;
   window.addEventListener('resize', function () { clearTimeout(rt); rt = window.setTimeout(refreshPanels, 150); });
 
+  /* ---------- Mapa (Leaflet + OpenStreetMap, se carga al acercarse) ---------- */
+  var mapEl = $('[data-map]');
+  if (mapEl) {
+    var initMap = function () {
+      var pos = [40.6541189, -4.6968026];
+      var touch = window.matchMedia('(pointer: coarse)').matches;
+      // sin arrastre en táctil ni zoom con la rueda: el mapa no secuestra el scroll de la página
+      var map = L.map(mapEl, { center: pos, zoom: 17, minZoom: 14, maxZoom: 19, scrollWheelZoom: false, dragging: !touch });
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+      }).addTo(map);
+      map.attributionControl.setPrefix(false);
+      var icon = L.divIcon({ className: 'map-pin', html: '<span class="map-pin__dot"></span>', iconSize: [26, 26], iconAnchor: [13, 13] });
+      // en pantallas estrechas la etiqueta va encima del pin para no salirse del mapa
+      var narrow = mapEl.clientWidth < 480;
+      L.marker(pos, { icon: icon, keyboard: false, title: 'Restaurante La Santa' }).addTo(map)
+        .bindTooltip('<strong>La Santa</strong><span>Plaza de Sta. Teresa, 16</span>', {
+          permanent: true, className: 'map-label',
+          direction: narrow ? 'top' : 'right', offset: narrow ? [0, -18] : [18, 0]
+        });
+    };
+    var mapLoaded = false;
+    var nearMap = function () {
+      var r = mapEl.getBoundingClientRect();
+      return r.top < window.innerHeight + 400 && r.bottom > -400;
+    };
+    // respaldo: si el IntersectionObserver no dispara, el scroll carga el mapa igual
+    var onMapScroll = function () { if (nearMap()) loadMap(); };
+    var loadMap = function () {
+      if (mapLoaded) return;
+      mapLoaded = true;
+      window.removeEventListener('scroll', onMapScroll);
+      var css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = 'leaflet.css?v=1.9.4';
+      document.head.appendChild(css);
+      var s = document.createElement('script');
+      s.src = 'leaflet.js?v=1.9.4';
+      s.onload = initMap;
+      document.head.appendChild(s);
+    };
+    if ('IntersectionObserver' in window) {
+      var mio = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { mio.disconnect(); loadMap(); }
+      }, { rootMargin: '400px 0px' });
+      mio.observe(mapEl);
+      window.addEventListener('scroll', onMapScroll, { passive: true });
+    } else {
+      loadMap();
+    }
+  }
+
   /* ---------- Count-up ---------- */
   function fmt(v, d) { return d ? v.toFixed(d).replace('.', ',') : Math.round(v).toLocaleString('es-ES'); }
   function countUp(el) {

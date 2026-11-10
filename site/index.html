@@ -35,7 +35,7 @@
 <link rel="preload" as="font" type="font/woff2" href="cormorant-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="hanken.woff2" crossorigin>
 
-<link rel="stylesheet" href="styles.css?v=17">
+<link rel="stylesheet" href="styles.css?v=18">
 <link rel="preload" as="image" href="hero-2000.webp" type="image/webp" fetchpriority="high">
 
 <script>document.documentElement.classList.add('js');</script>
@@ -457,9 +457,12 @@
         </div>
       </div>
       <figure class="info__map reveal-group" data-reveal>
-        <iframe title="Mapa de la ubicación del Restaurante La Santa en Ávila"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-4.6992%2C40.6529%2C-4.6944%2C40.6553&layer=mapnik&marker=40.6541189%2C-4.6968026"
-                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="info__map-canvas" data-map role="region" aria-label="Mapa: Restaurante La Santa, Plaza de Sta. Teresa de Jesús 16, Ávila"></div>
+        <noscript>
+          <iframe title="Mapa de la ubicación del Restaurante La Santa en Ávila"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=-4.6992%2C40.6529%2C-4.6944%2C40.6553&layer=mapnik&marker=40.6541189%2C-4.6968026"
+                  loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </noscript>
       </figure>
     </div>
   </section>
@@ -559,6 +562,6 @@
 </a>
 <!-- ===== /Botón flotante ===== -->
 
-<script src="script.js?v=1" defer></script>
+<script src="script.js?v=2" defer></script>
 </body>
 </html>
