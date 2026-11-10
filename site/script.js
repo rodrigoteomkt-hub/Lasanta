@@ -177,27 +177,64 @@
   var rt;
   window.addEventListener('resize', function () { clearTimeout(rt); rt = window.setTimeout(refreshPanels, 150); });
 
-  /* ---------- Mapa (Leaflet + OpenStreetMap, se carga al acercarse) ---------- */
+  /* ---------- Mapa (MapLibre + OpenFreeMap, se carga al acercarse) ---------- */
   var mapEl = $('[data-map]');
   if (mapEl) {
-    var initMap = function () {
-      var pos = [40.6541189, -4.6968026];
-      var touch = window.matchMedia('(pointer: coarse)').matches;
-      // sin arrastre en táctil ni zoom con la rueda: el mapa no secuestra el scroll de la página
-      var map = L.map(mapEl, { center: pos, zoom: 17, minZoom: 14, maxZoom: 19, scrollWheelZoom: false, dragging: !touch });
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
-      }).addTo(map);
-      map.attributionControl.setPrefix(false);
-      var icon = L.divIcon({ className: 'map-pin', html: '<span class="map-pin__dot"></span>', iconSize: [26, 26], iconAnchor: [13, 13] });
+    var POS = [-4.6968026, 40.6541189]; // [longitud, latitud]
+    // Estilo "Positron" de OpenFreeMap (sin iconos de iglesias, bancos, etc.) con los colores de la casa
+    var tintStyle = function (style) {
+      style.layers = style.layers.filter(function (l) { return !/shield|airport|aeroway|boundary/.test(l.id); });
+      style.layers.forEach(function (l) {
+        // cada color solo en su tipo de capa: MapLibre rechaza el estilo entero si no
+        var sl = l['source-layer'], p = l.paint = l.paint || {}, fill = l.type === 'fill', line = l.type === 'line';
+        if (l.type === 'background') p['background-color'] = '#F3EEE5';
+        else if (fill && sl === 'water') p['fill-color'] = '#D7DBD2';
+        else if (fill && (sl === 'park' || sl === 'landcover')) p['fill-color'] = '#E3E2D0';
+        else if (fill && sl === 'landuse') p['fill-color'] = '#EFE9DE';
+        else if (fill && sl === 'building') { p['fill-color'] = '#E7DDCC'; p['fill-outline-color'] = '#DBCEB9'; }
+        else if (line && sl === 'waterway') p['line-color'] = '#CFD5CD';
+        else if (line && sl === 'transportation') {
+          p['line-color'] = /railway/.test(l.id) ? '#D5CBBB' : (/casing/.test(l.id) ? '#E2D7C6' : '#FFFDF8');
+        } else if (l.type === 'symbol') {
+          p['text-color'] = '#8B8172';
+          p['text-halo-color'] = '#F3EEE5';
+          p['text-halo-width'] = 1.2;
+        }
+      });
+      return style;
+    };
+    var makeMark = function () {
+      var el = document.createElement('div');
       // en pantallas estrechas la etiqueta va encima del pin para no salirse del mapa
-      var narrow = mapEl.clientWidth < 480;
-      L.marker(pos, { icon: icon, keyboard: false, title: 'Restaurante La Santa' }).addTo(map)
-        .bindTooltip('<strong>La Santa</strong><span>Plaza de Sta. Teresa, 16</span>', {
-          permanent: true, className: 'map-label',
-          direction: narrow ? 'top' : 'right', offset: narrow ? [0, -18] : [18, 0]
-        });
+      el.className = 'map-mark' + (mapEl.clientWidth < 480 ? ' map-mark--top' : '');
+      el.innerHTML = '<span class="map-pin__dot"></span><span class="map-label"><strong>La Santa</strong><span>Plaza de Sta. Teresa, 16</span></span>';
+      return el;
+    };
+    // si el servicio de mapas o el navegador fallan, se muestra el mapa clásico de OpenStreetMap
+    var fallback = function () {
+      mapEl.innerHTML = '<iframe title="Mapa de la ubicación del Restaurante La Santa en Ávila" loading="lazy" ' +
+        'src="https://www.openstreetmap.org/export/embed.html?bbox=-4.6992%2C40.6529%2C-4.6944%2C40.6553&amp;layer=mapnik&amp;marker=40.6541189%2C-4.6968026"></iframe>';
+    };
+    var initMap = function () {
+      fetch('https://tiles.openfreemap.org/styles/positron')
+        .then(function (r) { if (!r.ok) throw new Error('estilo ' + r.status); return r.json(); })
+        .then(function (style) {
+          var touch = window.matchMedia('(pointer: coarse)').matches;
+          var map = new maplibregl.Map({
+            container: mapEl, style: tintStyle(style), center: POS, zoom: 16.3, minZoom: 13, maxZoom: 19,
+            // sin zoom con la rueda ni arrastre en táctil: el mapa no secuestra el scroll de la página
+            scrollZoom: false, dragPan: !touch, dragRotate: false, pitchWithRotate: false, touchPitch: false,
+            attributionControl: { compact: true }
+          });
+          map.touchZoomRotate.disableRotation();
+          map.keyboard.disableRotation();
+          map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left');
+          new maplibregl.Marker({ element: makeMark(), anchor: 'center' }).setLngLat(POS).addTo(map);
+          var ready = false;
+          map.once('load', function () { ready = true; });
+          setTimeout(function () { if (!ready) { map.remove(); fallback(); } }, 15000);
+        })
+        .catch(fallback);
     };
     var mapLoaded = false;
     var nearMap = function () {
@@ -212,11 +249,12 @@
       window.removeEventListener('scroll', onMapScroll);
       var css = document.createElement('link');
       css.rel = 'stylesheet';
-      css.href = 'leaflet.css?v=1.9.4';
+      css.href = 'maplibre-gl.css?v=5.24.0';
       document.head.appendChild(css);
       var s = document.createElement('script');
-      s.src = 'leaflet.js?v=1.9.4';
+      s.src = 'maplibre-gl.js?v=5.24.0';
       s.onload = initMap;
+      s.onerror = fallback;
       document.head.appendChild(s);
     };
     if ('IntersectionObserver' in window) {

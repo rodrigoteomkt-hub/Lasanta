@@ -293,25 +293,22 @@ body.menu-open .nav__toggle span{background:var(--ink)}
 .info__map{border-radius:2px;overflow:hidden;min-height:440px;box-shadow:0 30px 70px -40px rgba(28,26,21,.4)}
 .info__map iframe{width:100%;height:100%;min-height:440px;border:0}
 
-/* Mapa Leaflet: tonos de papel cálido, pin y etiqueta de la casa.
-   El prefijo .info__map gana a leaflet.css, que se carga después. */
-.info__map-canvas{position:relative;isolation:isolate;width:100%;height:100%;min-height:440px;background:var(--paper-2)}
-.info__map .leaflet-container{font-family:var(--sans);background:var(--paper-2)}
-.info__map .leaflet-tile-pane{filter:grayscale(1) sepia(.28) contrast(.86) brightness(1.07)}
-.info__map .map-pin{background:none;border:0}
+/* Mapa MapLibre: los colores del mapa se aplican en script.js; aquí el pin, la etiqueta y los controles.
+   El prefijo .info__map gana a maplibre-gl.css, que se carga después. */
+.info__map-canvas{position:relative;isolation:isolate;width:100%;height:100%;min-height:440px;background:#F3EEE5}
+.info__map .maplibregl-map{font-family:var(--sans)}
+.info__map .map-mark{width:26px;height:26px}
 .info__map .map-pin__dot{position:absolute;inset:0;border-radius:50%;background:var(--ink);border:3px solid #C9A063;box-shadow:0 6px 16px rgba(28,26,21,.38)}
 .info__map .map-pin__dot::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:1.5px solid rgba(140,92,43,.55);animation:mapPulse 2.6s var(--ease) infinite}
 @keyframes mapPulse{0%{transform:scale(.55);opacity:1}100%{transform:scale(1.5);opacity:0}}
-.info__map .leaflet-tooltip.map-label{padding:.6rem .85rem;background:var(--paper);color:var(--muted);border:1px solid var(--hair);border-radius:2px;box-shadow:0 12px 30px -14px rgba(28,26,21,.4);font-family:var(--sans);font-size:.72rem;letter-spacing:.04em;line-height:1.35;white-space:nowrap}
-.info__map .leaflet-tooltip.map-label strong{display:block;font-family:var(--serif);font-weight:500;font-size:1.2rem;letter-spacing:.01em;color:var(--ink)}
-.info__map .leaflet-tooltip-right.map-label::before{border-right-color:var(--paper)}
-.info__map .leaflet-tooltip-top.map-label::before{border-top-color:var(--paper)}
-.info__map .leaflet-tooltip-top.map-label{text-align:center}
-.info__map .leaflet-bar{border:0;border-radius:2px;box-shadow:0 8px 20px -10px rgba(28,26,21,.4)}
-.info__map .leaflet-bar a{background:var(--paper);color:var(--ink);border-bottom-color:var(--hair);font-weight:400}
-.info__map .leaflet-bar a:hover{background:var(--paper-2);color:var(--copper)}
-.info__map .leaflet-control-attribution{background:rgba(251,250,247,.86);color:var(--muted-2);font-size:.62rem}
-.info__map .leaflet-control-attribution a{color:var(--muted)}
+.info__map .map-label{position:absolute;left:calc(100% + 14px);top:50%;transform:translateY(-50%);padding:.6rem .85rem;background:var(--paper);color:var(--muted);border:1px solid var(--hair);border-radius:2px;box-shadow:0 12px 30px -14px rgba(28,26,21,.4);font-size:.72rem;letter-spacing:.04em;line-height:1.35;white-space:nowrap;pointer-events:none}
+.info__map .map-label strong{display:block;font-family:var(--serif);font-weight:500;font-size:1.2rem;letter-spacing:.01em;color:var(--ink)}
+.info__map .map-label span{display:block}
+.info__map .map-mark--top .map-label{left:50%;top:auto;bottom:calc(100% + 14px);transform:translateX(-50%);text-align:center}
+.info__map .maplibregl-ctrl-group:not(:empty){border-radius:2px;background:var(--paper);box-shadow:0 8px 20px -10px rgba(28,26,21,.4)}
+.info__map .maplibregl-ctrl-group button+button{border-top-color:var(--hair)}
+.info__map .maplibregl-ctrl.maplibregl-ctrl-attrib{background:rgba(251,250,247,.86);color:var(--muted-2);font-size:.62rem}
+.info__map .maplibregl-ctrl-attrib a{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.info__map .map-pin__dot::after{animation:none;opacity:0}}
 
 /* =====================================================================
