@@ -11,14 +11,14 @@
   var dt = $('[data-date]');
   if (dt) { try { dt.textContent = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }); } catch (e) {} }
 
-  /* ---------- Hero intro ---------- */
-  function revealHero() { $$('[data-hero]').forEach(function (el) { el.classList.add('is-in'); }); }
-  if (reduced) revealHero();
-  else { requestAnimationFrame(function () { requestAnimationFrame(revealHero); }); window.setTimeout(revealHero, 500); }
-
   /* ---------- Hero slideshow ---------- */
+  // la entrada del texto es solo CSS (@keyframes heroIn); aquí solo las diapositivas
   var slides = $$('.hero__slide');
   if (slides.length > 1 && !reduced) {
+    // las fotos 2 y 3 se piden cuando la página ya cargó, antes del primer cambio (6 s)
+    var loadSlides = function () { slides.forEach(function (s) { s.classList.add('is-loaded'); }); };
+    if (document.readyState === 'complete') window.setTimeout(loadSlides, 1200);
+    else window.addEventListener('load', function () { window.setTimeout(loadSlides, 1200); });
     var si = 0;
     window.setInterval(function () {
       if (document.hidden) return;

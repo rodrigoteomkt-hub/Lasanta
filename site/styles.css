@@ -140,8 +140,15 @@ body.menu-open .nav__toggle span{background:var(--ink)}
 .hero__slide.is-active{opacity:1;animation:kenburns 8s ease-out both}
 @keyframes kenburns{from{transform:scale(1.001)}to{transform:scale(1.085)}}
 .hero__slide--1{background-image:url('hero-2000.jpg');background-image:image-set(url('hero-2000.webp') type('image/webp'),url('hero-2000.jpg') type('image/jpeg'))}
-.hero__slide--2{background-image:url('terrace2-wide.jpg');background-image:image-set(url('terrace2-wide.avif') type('image/avif'),url('terrace2-wide.webp') type('image/webp'),url('terrace2-wide.jpg') type('image/jpeg'))}
-.hero__slide--3{background-image:url('dining-2000.jpg');background-image:image-set(url('dining-2000.avif') type('image/avif'),url('dining-2000.webp') type('image/webp'),url('dining-2000.jpg') type('image/jpeg'))}
+/* las diapositivas 2 y 3 solo se descargan cuando script.js añade .is-loaded (tras cargar la página) */
+.hero__slide--2.is-loaded{background-image:url('terrace2-wide.jpg');background-image:image-set(url('terrace2-wide.avif') type('image/avif'),url('terrace2-wide.webp') type('image/webp'),url('terrace2-wide.jpg') type('image/jpeg'))}
+.hero__slide--3.is-loaded{background-image:url('dining-2000.jpg');background-image:image-set(url('dining-2000.avif') type('image/avif'),url('dining-2000.webp') type('image/webp'),url('dining-2000.jpg') type('image/jpeg'))}
+/* móvil y tableta: fotos más ligeras */
+@media (max-width:768px){
+  .hero__slide--1{background-image:url('hero-1200.jpg');background-image:image-set(url('hero-1200.webp') type('image/webp'),url('hero-1200.jpg') type('image/jpeg'))}
+  .hero__slide--2.is-loaded{background-image:url('terrace2-1600.jpg');background-image:image-set(url('terrace2-1600.avif') type('image/avif'),url('terrace2-1600.webp') type('image/webp'),url('terrace2-1600.jpg') type('image/jpeg'))}
+  .hero__slide--3.is-loaded{background-image:url('dining-1200.jpg');background-image:image-set(url('dining-1200.avif') type('image/avif'),url('dining-1200.webp') type('image/webp'),url('dining-1200.jpg') type('image/jpeg'))}
+}
 .hero__scrim{position:absolute;inset:0;z-index:-1;background:
   radial-gradient(135% 105% at 50% 50%, rgba(12,10,7,.22), rgba(12,10,7,.5) 100%),
   linear-gradient(180deg, rgba(12,10,7,.5) 0%, rgba(12,10,7,.2) 30%, rgba(12,10,7,.28) 62%, rgba(12,10,7,.52) 100%)}
@@ -149,11 +156,12 @@ body.menu-open .nav__toggle span{background:var(--ink)}
 .hero__title{font-family:var(--serif);font-weight:400;color:var(--cream);font-size:var(--fs-h1);line-height:1.02;letter-spacing:.005em;margin:1.3rem 0 1.5rem;text-shadow:0 2px 30px rgba(0,0,0,.28)}
 .hero__lead{color:rgba(247,243,234,.92);font-family:var(--serif);font-size:var(--fs-lead);line-height:1.4;font-style:italic;max-width:34ch;margin-inline:auto}
 .hero__actions{display:flex;flex-wrap:wrap;gap:1.4rem;justify-content:center;align-items:center;margin-top:2.4rem}
-.js [data-hero]{opacity:0;transform:translateY(24px);transition:opacity 1s var(--ease-out),transform 1s var(--ease-out)}
-.js [data-hero].is-in{opacity:1;transform:none}
-[data-hero="2"]{transition-delay:.12s!important}
-[data-hero="3"]{transition-delay:.26s!important}
-[data-hero="4"]{transition-delay:.4s!important}
+/* entrada del hero solo con CSS: empieza en el primer pintado, sin esperar a script.js */
+.js [data-hero]{animation:heroIn 1s var(--ease-out) both}
+[data-hero="2"]{animation-delay:.12s}
+[data-hero="3"]{animation-delay:.26s}
+[data-hero="4"]{animation-delay:.4s}
+@keyframes heroIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 .hero__scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);width:1px;height:56px;background:rgba(247,243,234,.3);overflow:hidden}
 .hero__scroll span{position:absolute;top:0;left:0;width:100%;height:40%;background:var(--cream);animation:scrollDot 2.2s var(--ease) infinite}
 @keyframes scrollDot{0%{transform:translateY(-100%)}60%,100%{transform:translateY(260%)}}
