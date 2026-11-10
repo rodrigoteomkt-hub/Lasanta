@@ -341,8 +341,11 @@ body.menu-open .nav__toggle span{background:var(--ink)}
    FOOTER
    ===================================================================== */
 /* padding-bottom: el texto queda por encima de los dos botones flotantes */
-.footer{border-top:1px solid var(--hair);background:var(--paper);padding-bottom:calc(clamp(1rem,3vw,2rem) + 88px + .7rem)}
-.footer__inner{display:flex;align-items:center;justify-content:space-between;gap:1rem 2rem;flex-wrap:wrap;padding-block:clamp(1.5rem,3vw,2.1rem)}
+/* Texto centrado: en pantallas anchas queda entre los botones flotantes y no necesita espacio extra.
+   En pantallas estrechas los botones ocupan su ancho, así que el padding-bottom lo deja por encima de ellos. */
+.footer{border-top:1px solid var(--hair);background:var(--paper);padding-top:0;padding-bottom:calc(clamp(1rem,3vw,2rem) + 88px + .7rem)}
+.footer__inner{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.45rem;padding-block:clamp(1.3rem,2.6vw,1.8rem)}
+@media (min-width:820px){.footer{padding-bottom:0}}
 .footer__meta,.footer__credit{margin:0;font-family:var(--sans);font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-2)}
 .footer__credit strong{font-weight:600;color:var(--copper)}
 .footer__credit a{color:inherit;transition:color .35s var(--ease)}
