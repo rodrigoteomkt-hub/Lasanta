@@ -37,8 +37,8 @@ jobs:
             set net:max-retries 2;
             set net:timeout 30;
             set cmd:fail-exit yes;
-            mirror --reverse --verbose --parallel=4 --no-perms ./site \"$PASTA_SITE\";
-            cls -l \"$PASTA_SITE/index.html\";
+            mirror --reverse --verbose --parallel=4 --no-perms ./site $PASTA_SITE;
+            cls -l $PASTA_SITE/index.html;
             bye
           "
 
