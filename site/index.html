@@ -35,7 +35,7 @@
 <link rel="preload" as="font" type="font/woff2" href="cormorant-italic.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="hanken.woff2" crossorigin>
 
-<link rel="stylesheet" href="styles.css?v=22">
+<link rel="stylesheet" href="styles.css?v=21">
 <link rel="preload" as="image" href="hero-1200.webp" type="image/webp" fetchpriority="high" media="(max-width: 768px)">
 <link rel="preload" as="image" href="hero-2000.webp" type="image/webp" fetchpriority="high" media="(min-width: 769px)">
 
@@ -81,9 +81,6 @@
 
 <!-- NAV -->
 <header class="nav" id="nav" data-nav>
-  <!-- Aviso de vacaciones: se oculta solo a partir del 20/11/2026 (hora de Madrid). Para quitarlo antes, borrar el <p> y el <script>. -->
-  <p class="notice" id="aviso-vacaciones">Cerrado por vacaciones<span aria-hidden="true">·</span>Volvemos el viernes 20 de noviembre</p>
-  <script>if (Date.now() >= Date.parse('2026-11-20T00:00:00+01:00')) document.getElementById('aviso-vacaciones').hidden = true;</script>
   <div class="nav__inner">
     <span class="nav__spacer" aria-hidden="true"></span>
     <nav class="nav__links" aria-label="Navegación principal">
