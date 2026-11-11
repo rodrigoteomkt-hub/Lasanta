@@ -105,6 +105,9 @@ body{
 .nav.is-scrolled .nav__reserve{border-color:var(--hair)}
 .nav.is-scrolled .nav__links a:hover,.nav.is-scrolled .nav__reserve:hover{color:var(--copper)}
 .nav.is-scrolled .nav__reserve:hover{border-color:var(--copper)}
+/* Aviso temporal (p. ej. vacaciones), arriba del menú fijo */
+.notice{margin:0;padding:.6rem var(--gutter);background:var(--ink);color:var(--cream);text-align:center;font-family:var(--sans);font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;line-height:1.5}
+.notice span{margin:0 .7em;color:#C9A063}
 
 .nav__toggle{display:none;width:44px;height:44px;position:relative;margin-right:-10px}
 .nav__toggle span{position:absolute;left:11px;width:22px;height:1.5px;background:var(--cream);transition:transform .4s var(--ease),background-color .4s}
@@ -398,6 +401,8 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
   .info__map iframe,.info__map-canvas{min-height:340px}
 }
 @media(max-width:640px){
+  .notice{padding-block:.5rem;font-size:.64rem;letter-spacing:.1em}
+  .notice span{display:block;height:0;overflow:hidden;margin:0}
   html{scroll-padding-top:70px}
   /* --- compactar: menos ar vertical --- */
   .section{padding-block:clamp(2.75rem,8vw,3.6rem)}
