@@ -1,4 +1,16 @@
-# ===== La Santa — producción (Apache / HostGator) =====
+# ===== La Santa — producción (Apache / IONOS) =====
+
+# --- Dirección única: https://restaurantelasanta.com (sin www) ---
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # www -> sin www, siempre en https
+  RewriteCond %{HTTP_HOST} ^www\.restaurantelasanta\.com$ [NC]
+  RewriteRule ^ https://restaurantelasanta.com%{REQUEST_URI} [R=301,L]
+  # http -> https (X-Forwarded-Proto evita un bucle si hay proxy delante)
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
 
 # --- MIME de formatos modernos ---
 AddType image/avif .avif
